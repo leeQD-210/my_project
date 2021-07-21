@@ -2,6 +2,10 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../components/Login.vue'
 import Home from '../components/Home.vue'
+import Welcome from '../components/Welcome.vue'
+import Users from '../components/users/Users.vue'
+import GoodsList from '../components/goods/GoodsList.vue'
+import axios from 'axios'
 Vue.use(VueRouter)
 
 const routes = [
@@ -10,10 +14,25 @@ const routes = [
   /* 登录路由 */
   { path: '/login', component: Login },
   /* home主页路由 */
-  { path: '/home', component: Home }
+  {
+    path: '/home',
+    component: Home,
+    children: [
+      { path: '/', redirect: '/welcome' },
+      { path: '/welcome', component: Welcome },
+      { path: '/users', component: Users },
+      { path: '/goods', component: GoodsList }
+    ]
+  }
 ]
 const router = new VueRouter({
   routes
+})
+/* 添加请求拦截，向headers请求参数中添加authorization字段token认证
+若authorization字段认证通过，则能拿到后台数据，否则请求会被驳回 */
+axios.interceptors.request.use(config => {
+  config.headers.Authorization = window.sessionStorage.getItem('token')
+  return config
 })
 /* 添加路由拦截导航函数 */
 router.beforeEach((to, from, next) => {

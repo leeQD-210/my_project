@@ -7,3 +7,27 @@ html,body,#app{
 	padding: 0;
 	background-color: #2b4b6b;
 }
+/* 面包屑导航样式 */
+.el-breadcrumb{
+	font-size: 12px;
+	margin-bottom: 15px;
+}
+/* 卡片显示样式*/
+.el-card{
+	box-shadow: 0 1px 1px rgba(0,0,0,.15)!important;
+}
+/* 表格样式 */
+.el-table{
+	margin-top: 15px;
+	font-size: 12px;
+}
+th,td{
+	text-align: center!important;
+}
+/* 分页数据样式 */
+.el-pagination{
+	display: flex;
+	justify-content: center;
+	margin-top: 15px;
+	font-size: 12px!important;
+}
