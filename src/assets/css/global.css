@@ -6,6 +6,7 @@ html,body,#app{
 	margin: 0;
 	padding: 0;
 	background-color: #2b4b6b;
+	min-width: 1400px;
 }
 /* 面包屑导航样式 */
 .el-breadcrumb{

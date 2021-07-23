@@ -5,6 +5,8 @@ import Home from '../components/Home.vue'
 import Welcome from '../components/Welcome.vue'
 import Users from '../components/users/Users.vue'
 import GoodsList from '../components/goods/GoodsList.vue'
+import Rights from '../components/rights/Rights.vue'
+import Roles from '../components/rights/Roles.vue'
 import axios from 'axios'
 Vue.use(VueRouter)
 
@@ -21,7 +23,9 @@ const routes = [
       { path: '/', redirect: '/welcome' },
       { path: '/welcome', component: Welcome },
       { path: '/users', component: Users },
-      { path: '/goods', component: GoodsList }
+      { path: '/goods', component: GoodsList },
+      { path: '/rights', component: Rights },
+      { path: '/roles', component: Roles }
     ]
   }
 ]

@@ -18,7 +18,7 @@
           </el-col>
           <el-col :span="4"><el-button type="primary" @click="dialogVisible = true">添加用户</el-button></el-col>
         </el-row>
-        <!-- 表单显示区域 -->
+        <!-- 表单显示区域 stripe表示斑马条纹显示 -->
         <el-table :data="userList" style="width: 100%" border stripe>
           <el-table-column type="index" label="#"> </el-table-column>
           <el-table-column prop="username" label="姓名"> </el-table-column>
@@ -40,7 +40,7 @@
                 <el-button type="danger" icon="el-icon-delete" size="mini" :id="row.id" @click="deleteUser(row.id)"></el-button>
               </el-tooltip>
               <el-tooltip class="item" effect="light" content="设置" placement="top" :enterable="false">
-                <el-button type="warning" icon="el-icon-setting" size="mini" :id="row.id"></el-button>
+                <el-button type="warning" icon="el-icon-setting" size="mini" @click="assignUserRoleDialogOpen(row)"></el-button>
               </el-tooltip>
             </template>
           </el-table-column>
@@ -98,12 +98,28 @@
         <el-button type="primary" @click="editUser">确 定</el-button>
       </span>
     </el-dialog>
-    <!-- 删除确认框区域 -->
+    <!-- 弹出修改角色对话框区域 -->
+    <el-dialog title="修改用户角色" :visible.sync="assignUserRoleDialogVisible" width="50%" @close="reserAssignUserRoleForm">
+      <p><span class="label">当前用户:</span><span v-text="assignUserRoleForm.username"></span></p>
+      <p><span class="label">当前角色:</span><span v-text="assignUserRoleForm.roleName"></span></p>
+      <el-form :model="assignUserRoleForm" :rules="assignUserRoleRules" ref="assignUserRoleFormRef" label-width="100px" class="demo-ruleForm">
+        <el-form-item label="选择新角色:" prop="roleId" >
+          <el-select v-model="assignUserRoleForm.roleId" placeholder="请选择用户新角色">
+            <el-option :label="item.roleName" :value="item.id" v-for="item in roleList" :key="item.id"></el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="assignUserRoleDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="assignUserRole">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
 export default {
   data() {
+    /* 邮箱验证规则 */
     const validateEmail = function(rule, value, callback) {
       const RegEmail = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
       if (RegEmail.test(value)) {
@@ -111,6 +127,7 @@ export default {
       }
       callback(new Error('请输入正确格式的邮箱'))
     }
+    /* 手机号验证规则 */
     const validateMobile = function(rule, value, callback) {
       const RegMobile = /^1(3\d|4[5-9]|5[0-35-9]|6[2567]|7[0-8]|8\d|9[0-35-9])\d{8}$/
       if (RegMobile.test(value)) {
@@ -176,6 +193,21 @@ export default {
           { required: true, message: '手机号不能为空', trigger: 'blur' },
           { validator: validateMobile, trigger: 'blur' }
         ]
+      },
+      /* 控制分配角色显示 */
+      assignUserRoleDialogVisible: false,
+      /* 分配角色表单数据 */
+      assignUserRoleForm: {
+        userId: '',
+        roleId: '',
+        username: '',
+        roleName: ''
+      },
+      /* 角色列表 */
+      roleList: [],
+      /* 分配角色验证规则 */
+      assignUserRoleRules: {
+        role: [{ required: true, message: '新角色不能为空', trigger: 'change' }]
       }
     }
   },
@@ -284,7 +316,7 @@ export default {
       /* 结果确认表示用户点了确定 */
       if (result === 'confirm') {
         const { data: res } = await this.$http.delete('/users/' + id)
-        if (!res.meta.status === 200) {
+        if (res.meta.status !== 200) {
           return this.$message.error('用户删除失败')
         }
         this.$message.success('删除用户成功')
@@ -294,8 +326,52 @@ export default {
       if (result === 'cancel') {
         this.$message.info('删除取消')
       }
+    },
+    /* 点击修改角色按钮时，弹出对话框 */
+    async assignUserRoleDialogOpen(row) {
+      this.assignUserRoleDialogVisible = true
+      /* 显示当前用户名，角色名 */
+      this.assignUserRoleForm.userId = row.id
+      this.assignUserRoleForm.username = row.username
+      this.assignUserRoleForm.roleName = row.role_name
+      const { data: res } = await this.$http.get('/roles')
+      if (res.meta.status !== 200) {
+        this.$message.error(res.meta.msg)
+      }
+      this.roleList = res.data
+    },
+    /* 点击确定时先进行表单预验证，验证通过修改用户角色 */
+    assignUserRole() {
+      this.$refs.assignUserRoleFormRef.validate(async valid => {
+        if (!valid) {
+          return this.$message.error('用户新角色不能为空')
+        }
+        const { data: res } = await this.$http.put(`/users/${this.assignUserRoleForm.userId}/role`, {
+          rid: this.assignUserRoleForm.roleId
+        })
+        if (res.meta.status !== 200) {
+          return this.$message.error(res.meta.msg)
+        }
+        this.$message.success('用户角色修改成功')
+        /* 重新渲染用户列表 */
+        this.getUserList()
+        /* 关闭对话框 */
+        this.assignUserRoleDialogVisible = false
+      })
+    },
+    /* 对话框关闭时重置表单选择状态 */
+    reserAssignUserRoleForm() {
+      this.$refs.assignUserRoleFormRef.resetFields()
     }
   }
 }
 </script>
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.label{
+  display: inline-block;
+  width:100px;
+  text-align: right;
+  padding-right:12px ;
+  margin-bottom: 5px;
+}
+</style>
