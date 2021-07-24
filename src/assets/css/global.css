@@ -18,7 +18,7 @@ html,body,#app{
 	box-shadow: 0 1px 1px rgba(0,0,0,.15)!important;
 }
 /* 表格样式 */
-.el-table{
+.el-table,.zk-table{
 	margin-top: 15px;
 	font-size: 12px;
 }
@@ -31,4 +31,10 @@ th,td{
 	justify-content: center;
 	margin-top: 15px;
 	font-size: 12px!important;
+}
+/* 级联选择器样式 */
+.el-cascader__dropdown{
+	top:300px !important;
+	max-height: 30%;
+	overflow: auto;
 }
