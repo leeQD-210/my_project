@@ -1,40 +1,50 @@
-*{
-	box-sizing: border-box;
+* {
+  box-sizing: border-box;
 }
-html,body,#app{
-	height: 100%;
-	margin: 0;
-	padding: 0;
-	background-color: #2b4b6b;
-	min-width: 1400px;
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #2b4b6b;
+  min-width: 1400px;
 }
 /* 面包屑导航样式 */
-.el-breadcrumb{
-	font-size: 12px;
-	margin-bottom: 15px;
+.el-breadcrumb {
+  font-size: 12px;
+  margin-bottom: 15px;
 }
 /* 卡片显示样式*/
-.el-card{
-	box-shadow: 0 1px 1px rgba(0,0,0,.15)!important;
+.el-card {
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15) !important;
 }
 /* 表格样式 */
-.el-table,.zk-table{
-	margin-top: 15px;
-	font-size: 12px;
+.el-table,
+.zk-table {
+  margin-top: 15px;
+  font-size: 12px;
 }
-th,td{
-	text-align: center!important;
+th,
+td {
+  text-align: center !important;
 }
 /* 分页数据样式 */
-.el-pagination{
-	display: flex;
-	justify-content: center;
-	margin-top: 15px;
-	font-size: 12px!important;
+.el-pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+  font-size: 12px !important;
 }
-/* 级联选择器样式 */
-.el-cascader__dropdown{
-	top:300px !important;
-	max-height: 30%;
-	overflow: auto;
+/* 警示信息样式 */
+.el-alert {
+  margin-bottom: 15px;
+}
+/* 级联菜单高度 */
+.el-cascader-menu {
+  max-height: 300px;
+}
+/* 标签外边距 */
+.el-tag {
+  margin: 5px;
 }

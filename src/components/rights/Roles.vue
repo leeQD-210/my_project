@@ -309,9 +309,6 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.el-tag {
-  margin: 5px;
-}
 .border-top {
   border-top: 1px solid #eee;
 }

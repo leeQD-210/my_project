@@ -94,7 +94,7 @@ export default {
       goodsCateList: [],
       queryParams: {
         /* 获取分类等级 */
-        type: [1, 2, 3],
+        type: 3,
         /* 当前页码 */
         pagenum: 1,
         /* 显示数据大小 */
@@ -223,8 +223,9 @@ export default {
     /* 打开添加分类对话框 */
     async showAddCateDialog() {
       /* 获取父级分类数据 */
-      const { data: res } = await this.$http.get('/categories', { type: [1, 2] })
+      const { data: res } = await this.$http.get('/categories', { params: { type: 2 } })
       if (res.meta.status !== 200) return
+      console.log(res)
       this.parentCateInfo = res.data
       /* 显示对话框 */
       this.addCateDialogVisible = true
@@ -240,7 +241,7 @@ export default {
       } else {
         /* 选中父级Id为数组最后一位，数组长度为几则为几级分类 */
         this.addCateForm.cat_pid = this.selectParentCateId[0][this.selectParentCateId[0].length - 1]
-        this.addCateForm.cat_level = this.selectParentCateId[0].length - 1
+        this.addCateForm.cat_level = this.selectParentCateId[0].length
       }
     },
     /* 添加对话框点击确定,先进行预验证，再发送请求 */
