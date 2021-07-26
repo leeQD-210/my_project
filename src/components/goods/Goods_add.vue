@@ -286,9 +286,24 @@ export default {
         /* 发送axios请求 */
         const { data: res } = await this.$http.post('/goods', this.addGoodsForm)
         if (res.meta.status !== 201) {
+          /* 添加失败时清空添加表单的属性，防止重复添加 */
+          this.addGoodsForm.attrs = []
           return this.$message.error(res.meta.msg)
         }
         this.$message.success('商品添加成功')
+        /* 清空表单数据 */
+        this.$refs.addGoodsFormRef.resetFields()
+        /* 清空分类数据 */
+        this.goodsCateInfo = []
+        /* 清空属性数据 */
+        this.manyAttrInfo = []
+        this.onlyPropsInfo = []
+        /* 清空图片预览数据 */
+        this.$refs.picUpload.clearFiles()
+        this.addGoodsForm.pics = []
+        /* 清空添加表单中的数据 */
+        this.addGoodsForm.attrs = []
+        this.addGoodsForm.goods_introduce = ''
         /* 跳转商品列表页面 */
         this.$router.push('/goods')
       })

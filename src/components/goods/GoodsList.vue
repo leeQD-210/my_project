@@ -158,11 +158,12 @@ export default {
     },
     /* 删除商品 */
     deleteGoods(row) {
-      this.$confirm('此操作将永久删除该商品, 是否继续?', '提示', {
+      const options = {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
-      })
+      }
+      this.$confirm('此操作将永久删除该商品, 是否继续?', '提示', options)
         .then(async () => {
           const { data: res } = await this.$http.delete('/goods/' + row.goods_id)
           if (res.meta.status !== 200) {
