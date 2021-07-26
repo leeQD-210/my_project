@@ -48,3 +48,29 @@ td {
 .el-tag {
   margin: 5px;
 }
+/* 步骤条样式 */
+.el-step__icon,
+.el-step__title {
+  font-size: 12px !important;
+}
+/* 参数表格样式 */
+.goodsPropsForm > .el-form-item {
+  margin-bottom: 0;
+}
+.goodsPropsForm > .el-form-item > .el-form-item__label {
+  margin-left: 0 !important;
+  float: none;
+}
+.goodsPropsForm > .el-form-item > .el-form-item__content {
+  margin-left: 0 !important;
+  margin-top: 10px;
+}
+/* 复选框样式 */
+.el-checkbox {
+  margin-left: 0 !important;
+  margin-right: 10px;
+}
+/* 富文本编辑器样式 */
+.ql-container {
+  min-height: 250px;
+}

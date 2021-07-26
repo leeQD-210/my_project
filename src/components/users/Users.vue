@@ -20,7 +20,12 @@
         </el-row>
         <!-- 表单显示区域 stripe表示斑马条纹显示 -->
         <el-table :data="userList" style="width: 100%" border stripe>
-          <el-table-column type="index" label="#"> </el-table-column>
+          <el-table-column type="index" label="#">
+            <template v-slot="scope">
+              <!-- （当前页码-1）*页面数据数量+当前行渲染索引+1 -->
+              <span>{{ (queryParams.pagenum - 1) * queryParams.pagesize + scope.$index + 1 }}</span>
+            </template>
+          </el-table-column>
           <el-table-column prop="username" label="姓名"> </el-table-column>
           <el-table-column prop="email" label="邮箱"> </el-table-column>
           <el-table-column prop="mobile" label="电话"> </el-table-column>
@@ -103,7 +108,7 @@
       <p><span class="label">当前用户:</span><span v-text="assignUserRoleForm.username"></span></p>
       <p><span class="label">当前角色:</span><span v-text="assignUserRoleForm.roleName"></span></p>
       <el-form :model="assignUserRoleForm" :rules="assignUserRoleRules" ref="assignUserRoleFormRef" label-width="100px" class="demo-ruleForm">
-        <el-form-item label="选择新角色:" prop="roleId" >
+        <el-form-item label="选择新角色:" prop="roleId">
           <el-select v-model="assignUserRoleForm.roleId" placeholder="请选择用户新角色">
             <el-option :label="item.roleName" :value="item.id" v-for="item in roleList" :key="item.id"></el-option>
           </el-select>
@@ -367,11 +372,11 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.label{
+.label {
   display: inline-block;
-  width:100px;
+  width: 100px;
   text-align: right;
-  padding-right:12px ;
+  padding-right: 12px;
   margin-bottom: 5px;
 }
 </style>
