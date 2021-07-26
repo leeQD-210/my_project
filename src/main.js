@@ -22,9 +22,9 @@ Vue.config.productionTip = false
 /* 全局配置axios */
 axios.defaults.baseURL = 'http://127.0.0.1:8888/api/private/v1/'
 Vue.prototype.$http = axios
-/* 设定防抖算法 */
+/* 设定立即执行防抖算法 */
 Vue.prototype.$debounce = function(fn, wait) {
-  var timeout
+  let timeout
   return function() {
     /* 保存调用当前函数的对象 */
     const context = this
@@ -34,9 +34,32 @@ Vue.prototype.$debounce = function(fn, wait) {
     if (timeout) {
       clearTimeout(timeout)
     }
+    /* 第一次执行时timeout不存在，所以callNow为true, */
+    const callNow = !timeout
     timeout = setTimeout(() => {
-      fn.apply(context, args)
+      timeout = null
     }, wait)
+    /* 第一次callNow 为true,所以立即执行，后续用定时器控制callNow的值 */
+    if (callNow) {
+      fn.apply(context, args)
+    }
+  }
+}
+/* 设定节流算法 */
+Vue.prototype.$throttle = function(fn, wait) {
+  let timeout
+  return function() {
+    const context = this
+    const args = [...arguments]
+    /* 如果定时器不存在，则设定一个定时器，wait时间后执行
+        如果定时器存在，则不做处理
+        这样在定时器存在的这段事件里，函数只会被调用一次
+    */
+    if (!timeout) {
+      timeout = setTimeout(() => {
+        fn.applt(context, args)
+      }, wait)
+    }
   }
 }
 /* 注册自定义全局组件 */

@@ -10,6 +10,7 @@ import Roles from '../components/rights/Roles.vue'
 import GoodsCate from '../components/goods/Goods_cate.vue'
 import GoodsParams from '../components/goods/Goods_params.vue'
 import GoodsAdd from '../components/goods/Goods_add.vue'
+import GoodsOrder from '../components/goods/Goods_order.vue'
 import axios from 'axios'
 Vue.use(VueRouter)
 
@@ -31,7 +32,8 @@ const routes = [
       { path: '/rights', component: Rights },
       { path: '/roles', component: Roles },
       { path: '/categories', component: GoodsCate },
-      { path: '/params', component: GoodsParams }
+      { path: '/params', component: GoodsParams },
+      { path: '/orders', component: GoodsOrder }
     ]
   }
 ]
