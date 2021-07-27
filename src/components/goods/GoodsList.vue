@@ -13,7 +13,7 @@
         <el-row :gutter="20">
           <el-col :span="8">
             <el-input placeholder="请输入内容" v-model="queryParams.query" clearable @input="queryGoodsByName">
-              <el-button slot="append" icon="el-icon-search" @click="queryGoodsByName"></el-button>
+              <el-button slot="append" icon="el-icon-search"></el-button>
             </el-input>
           </el-col>
           <el-col :span="4"><el-button type="primary" @click="goAddGoods">添加商品</el-button></el-col>
@@ -79,6 +79,7 @@
   </div>
 </template>
 <script>
+import { debounce } from '../../assets/js/tools'
 export default {
   data() {
     return {
@@ -186,13 +187,14 @@ export default {
     handleCurrentChange(val) {
       /* 更新变化后的页面页码 */
       this.queryParams.pagenum = val
+      console.log(this)
       this.getGoods()
     },
     /* 根据商品名称查询商品 */
-    queryGoodsByName() {
-      /* 调用防抖函数,最后一次点击1000ms执行查询操作 */
-      this.$debounce(this.getGoods, 1000)()
-    },
+    /* 调用防抖函数,最后一次点击1000ms执行查询操作 */
+    queryGoodsByName: debounce(function() {
+      this.getGoods()
+    }, 1000),
     /* 跳转添加商品界面 */
     goAddGoods() {
       this.$router.push('/goods/add')

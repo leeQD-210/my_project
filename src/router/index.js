@@ -1,20 +1,22 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Login from '../components/Login.vue'
-import Home from '../components/Home.vue'
-import Welcome from '../components/Welcome.vue'
-import Users from '../components/users/Users.vue'
-import GoodsList from '../components/goods/GoodsList.vue'
-import Rights from '../components/rights/Rights.vue'
-import Roles from '../components/rights/Roles.vue'
-import GoodsCate from '../components/goods/Goods_cate.vue'
-import GoodsParams from '../components/goods/Goods_params.vue'
-import GoodsAdd from '../components/goods/Goods_add.vue'
-import Order from '../components/orders/order.vue'
-import Report from '../components/report/report.vue'
-import axios from 'axios'
+/* 引入各个组件 */
+/* 使用路由懒加载方式，当路由组件被调用时再获取路由，
+    webpackChunkName可以将不同路由根据功能进行分组
+*/
+const Login = () => import(/* webpackChunkName:"homepage" */ '../components/Login.vue')
+const Home = () => import(/* webpackChunkName:"homepage" */ '../components/Home.vue')
+const Welcome = () => import(/* webpackChunkName:"homepage" */ '../components/Welcome.vue')
+const Users = () => import(/* webpackChunkName:"userpage" */ '../components/users/Users.vue')
+const Rights = () => import(/* webpackChunkName:"userpage" */ '../components/rights/Rights.vue')
+const Roles = () => import(/* webpackChunkName:"userpage" */ '../components/rights/Roles.vue')
+const GoodsCate = () => import(/* webpackChunkName:"goodscate" */ '../components/goods/Goods_cate.vue')
+const GoodsParams = () => import(/* webpackChunkName:"goodscate" */ '../components/goods/Goods_params.vue')
+const GoodsList = () => import(/* webpackChunkName:"goodslist" */ '../components/goods/GoodsList.vue')
+const GoodsAdd = () => import(/* webpackChunkName:"goodslist" */ '../components/goods/Goods_add.vue')
+const Order = () => import(/* webpackChunkName:"order" */ '../components/orders/order.vue')
+const Report = () => import(/* webpackChunkName:"report" */ '../components/report/report.vue')
 Vue.use(VueRouter)
-
 const routes = [
   /* 重定向路由 */
   { path: '/', redirect: '/login' },
@@ -41,12 +43,6 @@ const routes = [
 ]
 const router = new VueRouter({
   routes
-})
-/* 添加请求拦截，向headers请求参数中添加authorization字段token认证
-若authorization字段认证通过，则能拿到后台数据，否则请求会被驳回 */
-axios.interceptors.request.use(config => {
-  config.headers.Authorization = window.sessionStorage.getItem('token')
-  return config
 })
 /* 添加路由拦截导航函数 */
 router.beforeEach((to, from, next) => {

@@ -58,6 +58,7 @@ export default {
     this.getMenuList()
     /* 当页面刷新，组件重新被创建渲染时，获取session中储存的index值 */
     this.activeIndex = window.sessionStorage.getItem('activeIndex')
+    console.log('hello world')
   },
   methods: {
     logout: function() {

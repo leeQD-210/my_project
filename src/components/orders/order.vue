@@ -109,6 +109,8 @@
 <script>
 /* 引入省市级数据 */
 import cityData from './city_data2017_element'
+/* 引入防抖函数 */
+import { debounce } from '../../assets/js/tools'
 export default {
   data() {
     return {
@@ -250,10 +252,10 @@ export default {
       this.logisticsMessage = res.data */
     },
     /* 根据订单编号查询  */
-    queryOrderByName() {
-      /* 使用防抖算法进行搜索 */
-      this.$debounce(this.getOrders(), 1000)
-    },
+    /* 使用防抖算法进行搜索 */
+    queryOrderByName: debounce(function() {
+      this.getOrders()
+    }, 1000),
     /* 对话框关闭时重置表单 */
     resetEditForm() {
       this.$refs.editFormRef.resetFields()
